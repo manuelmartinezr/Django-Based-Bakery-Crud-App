@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bakery',  # The name of your database
-        'USER': 'app_user',            # Your database user
-        'PASSWORD': 'Password123!',    # Your database user's password
+        'NAME': 'pf',  # The name of your database
+        'USER': 'root',            # Your database user
+        'PASSWORD': '162534',    # Your database user's password
         'HOST': 'localhost',           # Set to empty string for localhost.
         'PORT': '3306',                # The default port for MariaDB/MySQL
     }

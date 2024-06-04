@@ -22,9 +22,9 @@ class Administrator(models.Model):
 
 class Order(models.Model):
     date = models.DateField()
-    entry_time = models.TimeField()
-    delivery_date = models.DateField()
-    delivery_time = models.TimeField()
+    entry_time = models.TimeField() 
+    delivery_date = models.DateField(null=True, blank=True)
+    delivery_time = models.TimeField(null=True, blank=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
     delivery_person = models.ForeignKey(DeliveryPerson, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -43,18 +43,30 @@ class Order(models.Model):
 
 class DeliverySchedules(models.Model):
     delivery_person = models.ForeignKey(DeliveryPerson, on_delete=models.CASCADE)
-    schedule = models.JSONField
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+from django.db import models
 
 class DeliveryVehicle(models.Model):
-    delivery_person = models.ForeignKey(DeliveryPerson, on_delete=models.CASCADE)
+    delivery_person = models.ForeignKey('DeliveryPerson', on_delete=models.CASCADE)
     VEHICLE_CHOICES = [
         ('car', 'Car'),
         ('motorcycle', 'Motorcycle'),
         ('bicycle', 'Bicycle'),
     ]
     vehicle = models.CharField(max_length=10, choices=VEHICLE_CHOICES)
-    license_number = models.CharField(max_length=50)
-    expiration_date = models.DateField()
+    license_number = models.CharField(max_length=50, null=True, blank=True)
+    expiration_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.delivery_person} - {self.vehicle}'
+
+    def clean(self):
+        if self.vehicle == 'bicycle':
+            self.license_number = None
+            self.expiration_date = None
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
