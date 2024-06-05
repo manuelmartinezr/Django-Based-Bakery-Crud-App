@@ -16,6 +16,9 @@ class DeliveryPerson(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.first_name
+
 class Administrator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     first_name = models.CharField(max_length=100)
@@ -23,8 +26,8 @@ class Administrator(models.Model):
 class Order(models.Model):
     date = models.DateField()
     entry_time = models.TimeField()
-    delivery_date = models.DateField()
-    delivery_time = models.TimeField()
+    delivery_date = models.DateField(null=True, blank=True)
+    delivery_time = models.TimeField(null=True, blank=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
     delivery_person = models.ForeignKey(DeliveryPerson, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
